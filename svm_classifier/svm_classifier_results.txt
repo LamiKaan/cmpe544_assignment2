@@ -1,0 +1,24 @@
+Classifier-1 with C=100:
+  Training Time: 2 minutes 59 seconds
+  Validation Accuracy: 0.9513
+
+Classifier-2 with C=10:
+  Training Time: 2 minutes 29 seconds
+  Validation Accuracy: 0.9550
+
+Classifier-3 with C=1:
+  Training Time: 2 minutes 13 seconds
+  Validation Accuracy: 0.9619
+
+Classifier-4 with C=0.1:
+  Training Time: 1 minutes 56 seconds
+  Validation Accuracy: 0.9675
+
+Classifier-5 with C=0.01:
+  Training Time: 1 minutes 31 seconds
+  Validation Accuracy: 0.9525
+
+
+Final (best) classifier with C=0.1
+  Training Time: 3 minutes 1 seconds
+  Test Accuracy: 0.9595

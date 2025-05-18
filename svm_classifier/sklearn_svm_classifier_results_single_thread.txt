@@ -1,0 +1,20 @@
+SVM with 'linear' kernel
+  Best Parameters: {'C': 0.1}
+  Training Time: 1 minutes 27 seconds
+  Test Accuracy: 0.9595
+
+SVM with 'rbf' kernel
+  Best Parameters: {'C': 1, 'gamma': 'auto'}
+  Training Time: 1 minutes 29 seconds
+  Test Accuracy: 0.9655
+
+SVM with 'poly' kernel
+  Best Parameters: {'C': 0.01, 'degree': 3, 'gamma': 0.1}
+  Training Time: 1 minutes 48 seconds
+  Test Accuracy: 0.9655
+
+SVM with 'sigmoid' kernel
+  Best Parameters: {'C': 1, 'gamma': 0.01}
+  Training Time: 0 minutes 35 seconds
+  Test Accuracy: 0.9420
+
