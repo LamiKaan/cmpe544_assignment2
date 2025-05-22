@@ -36,11 +36,17 @@ class KMeansClustering:
             # Euclidean distance from each point to each centroid
             return np.linalg.norm(X[:, np.newaxis, :] - centroids, axis=2)
         elif self.distance_metric == 'manhattan':
-            pass
+            return np.sum(np.abs(X[:, np.newaxis, :] - centroids), axis=2)
         elif self.distance_metric == 'cosine':
-            pass
+            # Normalize X and centroids to unit vectors
+            X_normalized = X / np.linalg.norm(X, axis=1, keepdims=True)
+            centroids_normalized = centroids / np.linalg.norm(centroids, axis=1, keepdims=True)
+            # Compute cosine similarity
+            cosine_similarity = np.dot(X_normalized, centroids_normalized.T)
+            # Convert to cosine distance
+            return 1 - cosine_similarity
         else:
-            pass
+            raise ValueError(f"Unsupported distance metric: {self.distance_metric}")
 
     def assign_clusters(self, distances):
         # Assign each sample to the closest centroid
@@ -119,12 +125,13 @@ class KMeansClustering:
         ca = calculate_clustering_accuracy(y_true=y, y_pred=self.labels)
         self.results['external']['clustering_accuracy'] = ca
 
+        # Adjusted Rand Index
+        ari = adjusted_rand_score(labels_true=y, labels_pred=self.labels)
+        self.results['external']['adjusted_rand_index'] = ari
 
-
-
-        # Within-cluster sum of squares (WCSS)
-        distances = self.compute_distances(X, self.centroids)
-        return np.sum((np.min(distances, axis=1))**2)
+        # Normalized Mutual Information
+        nmi = normalized_mutual_info_score(labels_true=y, labels_pred=self.labels)
+        self.results['external']['normalized_mutual_information'] = nmi
     
 
 if __name__ == "__main__":
@@ -152,10 +159,45 @@ if __name__ == "__main__":
     X = train_features
     y = train_labels
 
-    # Create a KMeansClustering object
-    kmeans = KMeansClustering(n_clusters=5)
+    # Create a KMeansClustering object with euclidean distance metric
+    kmeans_euclidean = KMeansClustering(n_clusters=5, distance_metric='euclidean')
     # Fit with training data
-    kmeans.fit(X)
+    kmeans_euclidean.fit(X)
+    # Calculate results
+    kmeans_euclidean.calculate_results(X, y)
 
-    print("WCSS:", kmeans.inertia(X))
-    print("Cluster labels:", kmeans.labels)
+    # Repeat for Manhattan distance metric
+    kmeans_manhattan = KMeansClustering(n_clusters=5, distance_metric='manhattan')
+    kmeans_manhattan.fit(X)
+    kmeans_manhattan.calculate_results(X, y)
+
+    # Repeat for Cosine distance metric
+    kmeans_cosine = KMeansClustering(n_clusters=5, distance_metric='cosine')
+    kmeans_cosine.fit(X)
+    kmeans_cosine.calculate_results(X, y)
+
+    output_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "kmeans_results.txt"))
+    # Write the results to a text file
+    with open(output_file_path, 'w') as f:
+        f.write("KMeans Clustering Results:\n")
+        f.write("====================================\n\n")
+        
+        f.write("Distance Metric: Euclidean\n")
+        for metric, results in kmeans_euclidean.results.items():
+            f.write(f"{metric.capitalize()} Metric Results:\n")
+            for name, value in results.items():
+                f.write(f"\t{name.upper()}: {value:.4f}\n")
+        f.write("\n")
+
+        f.write("Distance Metric: Manhattan\n")
+        for metric, results in kmeans_manhattan.results.items():
+            f.write(f"{metric.capitalize()} Metric Results:\n")
+            for name, value in results.items():
+                f.write(f"\t{name.upper()}: {value:.4f}\n")
+        f.write("\n")
+
+        f.write("Distance Metric: Cosine\n")
+        for metric, results in kmeans_cosine.results.items():
+            f.write(f"{metric.capitalize()} Metric Results:\n")
+            for name, value in results.items():
+                f.write(f"\t{name.upper()}: {value:.4f}\n")

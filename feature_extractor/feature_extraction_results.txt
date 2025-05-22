@@ -1,4 +1,0 @@
-Feature extraction completed in: 0 minutes 6 seconds.
-
-Retained variance ratio of PCA: 0.7057
-Retained variance ratio of PCA whitening: 0.7057

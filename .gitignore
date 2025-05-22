@@ -23,9 +23,13 @@ data/quickdraw_subset_np/*
 # But keep the subdirectory
 !data/quickdraw_subset_np/
 !data/quickdraw_subset_np/.gitkeep
+!data/quickdraw_subset_np/*features*
 # Ignore all jupyter notebooks
 *.ipynb
 # Ignore all torch tensors
 *.pt
 # Ignore all images
 *.png
+*.heic
+# Feature extraction results
+feature_extractor/feature_extraction_results.txt
